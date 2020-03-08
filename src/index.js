@@ -1,12 +1,22 @@
+
 import React from 'react';
+import { Fragment } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+import UserList from './componentlist.js';
+
+const App = () => {
+  return (
+    <Fragment>
+        <div className="container">
+            <div className="card card-default" id="card_contacts">
+                <div id="contacts" className="panel-collapse collapse show" aria-expanded="true">
+                    <UserList />
+                </div>
+            </div>
+        </div>
+    </Fragment>
+  )
+}
 
 ReactDOM.render(<App />, document.getElementById('root'));
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
