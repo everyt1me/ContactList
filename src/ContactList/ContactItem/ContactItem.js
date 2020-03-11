@@ -9,7 +9,8 @@ class UserItem extends Component {         //class based component
     phone: "(097) 685-2545",
     email: "mike.tyson@ukr.net",
     avatar: 25,
-    gender: "men"
+    gender: "men",
+    favorite: 'far fa-star fa-2x'
   };
 
   onRandomAvatar = () => {
@@ -19,8 +20,23 @@ class UserItem extends Component {         //class based component
     });
   }
 
+  setFavoriteStar = () => {
+    if(this.state.favorite === 'far fa-star fa-2x'){
+      const favorite = 'fas fa-star fa-2x';
+      this.setState ({
+        favorite: favorite
+      });
+    }
+    else {
+      const favorite = 'far fa-star fa-2x';
+      this.setState ({
+        favorite: favorite
+      });
+    }
+  }
+
   render() {
-    const { name, adress, phone, email, avatar, gender } = this.state;
+    const { name, adress, phone, email, avatar, gender, favorite } = this.state;
     const URL = `https://api.randomuser.me/portraits/${gender}/${avatar}.jpg`;
     return (
       <Fragment>
@@ -41,6 +57,8 @@ class UserItem extends Component {         //class based component
               <br />
               <span className="fa fa-envelope fa-fw text-muted" data-toggle="tooltip" data-original-title="" title=""></span>
               <span className="text-muted small text-truncate">{email}</span>
+              <br />
+              <span className="float-right pulse text-warning"><i className = { favorite } onClick = { this.setFavoriteStar } ></i></span>
             </div>
           </div>
         </li>
