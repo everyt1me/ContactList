@@ -4,13 +4,13 @@ import './ContactItem.css';
 class UserItem extends Component {         //class based component
 
   state = {
-    name: "Mike Tyson",
-    adress: "Rivne, Stepana Banderu str.",
-    phone: "(097) 685-2545",
-    email: "mike.tyson@ukr.net",
-    avatar: 25,
-    gender: "men",
-    favorite: 'far fa-star fa-2x'
+    name: this.props.name,
+    adress: this.props.adress,
+    phone: this.props.phone,
+    email: this.props.email,
+    avatar: this.props.avatar,
+    gender: this.props.gender,
+    favorite: this.props.favorite
   };
 
   onRandomAvatar = () => {
@@ -21,21 +21,22 @@ class UserItem extends Component {         //class based component
   }
 
   setFavoriteStar = () => {
-    if(this.state.favorite === 'far fa-star fa-2x'){
+    if (this.state.favorite === 'far fa-star fa-2x') {
       const favorite = 'fas fa-star fa-2x';
-      this.setState ({
+      this.setState({
         favorite: favorite
       });
     }
     else {
       const favorite = 'far fa-star fa-2x';
-      this.setState ({
+      this.setState({
         favorite: favorite
       });
     }
   }
 
   render() {
+    // console.log("Contact Items Props =>", this.props)
     const { name, adress, phone, email, avatar, gender, favorite } = this.state;
     const URL = `https://api.randomuser.me/portraits/${gender}/${avatar}.jpg`;
     return (
@@ -58,7 +59,7 @@ class UserItem extends Component {         //class based component
               <span className="fa fa-envelope fa-fw text-muted" data-toggle="tooltip" data-original-title="" title=""></span>
               <span className="text-muted small text-truncate">{email}</span>
               <br />
-              <span className="float-right pulse text-warning"><i className = { favorite } onClick = { this.setFavoriteStar } ></i></span>
+              <span className="float-right pulse text-warning"><i className={favorite} onClick={this.setFavoriteStar} ></i></span>
             </div>
           </div>
         </li>
