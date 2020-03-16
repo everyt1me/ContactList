@@ -16,7 +16,7 @@ class App extends React.Component {
         email: "mike.tyson@ukr.net",
         avatar: 25,
         gender: "men",
-        favorite: 'far fa-star fa-2x'
+        star: true
       },
       {
         id: 2,
@@ -26,7 +26,7 @@ class App extends React.Component {
         email: "v.klitchko@ukr.net",
         avatar: 67,
         gender: "men",
-        favorite: 'far fa-star fa-2x'
+        star: true
       },
       {
         id: 3,
@@ -36,7 +36,7 @@ class App extends React.Component {
         email: "y.stone@ukr.net",
         avatar: 56,
         gender: "women",
-        favorite: 'far fa-star fa-2x'
+        star: false
       },
       {
         id: 4,
@@ -46,7 +46,7 @@ class App extends React.Component {
         email: "first.joker@gmail.com",
         avatar: 33,
         gender: "men",
-        favorite: 'far fa-star fa-2x'
+        star: false
       },
       {
         id: 5,
@@ -56,10 +56,21 @@ class App extends React.Component {
         email: "birdofprey@gmail.com",
         avatar: 28,
         gender: "women",
-        favorite: 'far fa-star fa-2x'
+        star: false
       }
     ]
-  }
+  };
+
+  onStarChange = id => {
+    this.setState(state => {
+      const index = this.state.Contacts.findIndex(elem => elem.id === id);
+      const newStar = this.state.Contacts.slice();
+      newStar[index].star = !newStar[index].star;
+      return {
+        star: !this.newStar
+      };
+    });
+  };
 
   render() {
     return (
@@ -67,7 +78,8 @@ class App extends React.Component {
         <div className="card card-default" id="card_contacts">
           <div id="contacts" className="panel-collapse collapse show" aria-expanded="true">
             <h1>Contact List App</h1>
-            <UserList Contacts = { this.state.Contacts } />
+            <UserList Contacts={this.state.Contacts} 
+            onStarChange = {this.onStarChange} />
           </div>
         </div>
       </div>

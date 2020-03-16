@@ -2,7 +2,7 @@ import React from 'react';
 import './ContactList.css';
 import UserItem from './ContactItem/ContactItem';
 
-const UserList = ({ Contacts }) => {       //function based component
+const UserList = ({ Contacts, onStarChange }) => {       //function based component
   console.log("UserList =>", Contacts);
 
   const item = Contacts.map(item => {
@@ -15,7 +15,8 @@ const UserList = ({ Contacts }) => {       //function based component
         email={item.email}
         avatar={item.avatar}
         gender={item.gender}
-        favorite={item.favorite}
+        star={item.star}
+        onStarChange={() => onStarChange(item.id)}
       />
     );
   });
@@ -24,7 +25,7 @@ const UserList = ({ Contacts }) => {       //function based component
     <ul className="list-group pull-down" id="contact-list">
       {item}
     </ul>
-  )
-}
+  );
+};
 
 export default UserList;

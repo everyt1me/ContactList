@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import './ContactItem.css';
 
-class UserItem extends Component {         //class based component
+class UserItem extends Component {     
 
   state = {
     name: this.props.name,
@@ -10,7 +10,7 @@ class UserItem extends Component {         //class based component
     email: this.props.email,
     avatar: this.props.avatar,
     gender: this.props.gender,
-    favorite: this.props.favorite
+    star: this.props.star
   };
 
   onRandomAvatar = () => {
@@ -20,25 +20,17 @@ class UserItem extends Component {         //class based component
     });
   }
 
-  setFavoriteStar = () => {
-    if (this.state.favorite === 'far fa-star fa-2x') {
-      const favorite = 'fas fa-star fa-2x';
-      this.setState({
-        favorite: favorite
-      });
+  render() {
+    const { name, adress, phone, email, avatar, gender } = this.state;
+    const URL = `https://api.randomuser.me/portraits/${gender}/${avatar}.jpg`;
+
+    if (this.props.star) {
+      var favoriteStyle = "far fa-star fa-2x";
     }
     else {
-      const favorite = 'far fa-star fa-2x';
-      this.setState({
-        favorite: favorite
-      });
+      var favoriteStyle = "fas fa-star fa-2x";
     }
-  }
 
-  render() {
-    // console.log("Contact Items Props =>", this.props)
-    const { name, adress, phone, email, avatar, gender, favorite } = this.state;
-    const URL = `https://api.randomuser.me/portraits/${gender}/${avatar}.jpg`;
     return (
       <Fragment>
         <li className="list-group-item">
@@ -59,7 +51,7 @@ class UserItem extends Component {         //class based component
               <span className="fa fa-envelope fa-fw text-muted" data-toggle="tooltip" data-original-title="" title=""></span>
               <span className="text-muted small text-truncate">{email}</span>
               <br />
-              <span className="float-right pulse text-warning"><i className={favorite} onClick={this.setFavoriteStar} ></i></span>
+              <span className="float-right pulse text-warning"><i className={favoriteStyle} aria-hidden="true" onClick={this.props.onStarChange} ></i></span>
             </div>
           </div>
         </li>
