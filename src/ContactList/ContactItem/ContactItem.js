@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react';
+import { Link } from "react-router-dom";
 import './ContactItem.css';
 
 class UserItem extends Component {     
@@ -49,7 +50,13 @@ class UserItem extends Component {
                 onClick={this.props.onDeleteContact}
               >
               </span>
-              <span className="float-right pulse">
+              <Link to="/edit"
+                className="fa fa-edit fa-2x text-success float-right pulse"
+                title="Edit"
+                onClick={this.props.onEditContact}
+              >
+              </Link>
+              <span className="float-right pulse text-warning">
                   <i
                     className={favoriteStyle}
                     aria-hidden="true"

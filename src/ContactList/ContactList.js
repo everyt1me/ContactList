@@ -2,7 +2,7 @@ import React from 'react';
 import './ContactList.css';
 import UserItem from './ContactItem/ContactItem';
 
-const UserList = ({ Contacts, onStarChange, onDeleteContact }) => {       //function based component
+const UserList = ({ Contacts, onStarChange, onDeleteContact, onEditContact }) => {       //function based component
   console.log("UserList =>", Contacts);
 
   const item = Contacts.map(item => {
@@ -21,6 +21,7 @@ const UserList = ({ Contacts, onStarChange, onDeleteContact }) => {       //func
         star={item.star}
         onStarChange={() => onStarChange(item.id)}
         onDeleteContact={() => onDeleteContact(item.id)}
+        onEditContact={() => onEditContact(item.id)}
       />
     );
   });
