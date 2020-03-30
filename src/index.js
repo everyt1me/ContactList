@@ -86,15 +86,16 @@ class App extends React.Component {
     }).then(response => {
       console.log(response);
     }).catch(err => console.log(err.Message));
-    this.updateContactList();
+    // this.updateContactList();
   };
 
   onDeleteContact = id => {
-    const index = this.state.List.findIndex(elem => elem.id === id);
+    const index = this.state.Contacts.findIndex(elem => elem.id === id);
 
-    const partOne = this.state.List.slice(0, index);
-    const partTwo = this.state.List.slice(index + 1);
+    const partOne = this.state.Contacts.slice(0, index);
+    const partTwo = this.state.Contacts.slice(index + 1);
     const newList = [...partOne, ...partTwo];
+    this.onSaveData(newList);
     this.setState(state => {
       return {
         List: newList
@@ -117,6 +118,7 @@ class App extends React.Component {
     const partOne = this.state.Contacts.slice(0, index);
     const partTwo = this.state.Contacts.slice(index + 1);
     const newList = [...partOne, editedContact, ...partTwo];
+    this.onSaveData(newList);
     this.setState(state => {
       return {
         Contacts: newList

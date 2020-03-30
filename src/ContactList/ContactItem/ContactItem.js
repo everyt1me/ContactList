@@ -29,7 +29,7 @@ class UserItem extends Component {
       var favoriteStyle = "far fa-star fa-2x";
     }
     else {
-      var favoriteStyle = "fas fa-star fa-2x";
+      favoriteStyle = "fas fa-star fa-2x";
     }
 
     return (
