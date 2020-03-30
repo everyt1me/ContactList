@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 import uuid from "uuid";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import './index.css';
+// import firebase from "./ContactList/Firebase/firebase";
 
 import AddContact from "./ContactList/AddContact/AddContact";
 import UserList from './ContactList/ContactList';
@@ -12,61 +13,28 @@ import EditContact from "./ContactList/EditContact/EditContact";
 import NotFoundPage from "./ContactList/NotFoundPage/NotFoundPage";
 
 class App extends React.Component {
+  URL = "https://contactlist-79742.firebaseio.com/Contacts.json";
+
+  componentDidMount() {
+    this.updateContactList();
+  }
+
+  updateContactList = () => {
+    fetch(this.URL).then(response => {
+      return response.json();
+    })
+      .then(list => {
+        this.setState({
+          Contacts: list
+        });
+      })
+      .catch(err => console.log(err));
+  };
 
   state = {
-    Contacts: [
-      {
-        id: 1,
-        name: "Mike Tyson",
-        address: "Rivne, Stepana Banderu str.",
-        phone: "(097) 685-2545",
-        email: "mike.tyson@ukr.net",
-        avatar: 25,
-        gender: "men",
-        star: true
-      },
-      {
-        id: 2,
-        name: "Vitalii Klitchko",
-        address: "Kyiv, Stepana Banderu str.",
-        phone: "(097) 685-9845",
-        email: "v.klitchko@ukr.net",
-        avatar: 67,
-        gender: "men",
-        star: true
-      },
-      {
-        id: 3,
-        name: "Yvayne Stone",
-        address: "NY, 5 avenue",
-        phone: "+1 (916) 514-3459",
-        email: "y.stone@ukr.net",
-        avatar: 56,
-        gender: "women",
-        star: false
-      },
-      {
-        id: 4,
-        name: "Arthur Fleck",
-        address: "Gotham City",
-        phone: "+1 (916) 513-3257",
-        email: "first.joker@gmail.com",
-        avatar: 33,
-        gender: "men",
-        star: false
-      },
-      {
-        id: 5,
-        name: "Harley Quinn",
-        address: "Arkham Asylum",
-        phone: "+1 (916) 713-9957",
-        email: "birdofprey@gmail.com",
-        avatar: 28,
-        gender: "women",
-        star: false
-      }
-    ],
-    currentContact: ""
+    Contacts: [],
+    currentContact: "",
+    findContact: ""
   };
 
   onStarChange = id => {
@@ -92,12 +60,13 @@ class App extends React.Component {
       star: true
     };
     const newList = [...this.state.Contacts, newContact];
+    this.onSaveData(newList);
     this.setState(state => {
       return {
         Contacts: newList
       };
     });
-  }
+  };
 
   onEditContact = id => {
     const index = this.state.Contacts.findIndex(elem => elem.id === id);
@@ -107,13 +76,28 @@ class App extends React.Component {
     });
   };
 
+  async onSaveData (newList) {
+    await fetch(this.URL, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(newList)
+    }).then(response => {
+      console.log(response);
+    }).catch(err => console.log(err.Message));
+    this.updateContactList();
+  };
+
   onDeleteContact = id => {
+    const index = this.state.List.findIndex(elem => elem.id === id);
+
+    const partOne = this.state.List.slice(0, index);
+    const partTwo = this.state.List.slice(index + 1);
+    const newList = [...partOne, ...partTwo];
     this.setState(state => {
-      const index = state.Contacts.findIndex(elem => elem.id === id);
-      const stateDeleted = state.Contacts;
-      stateDeleted.splice(index, 1);
       return {
-        Contacts: stateDeleted
+        List: newList
       };
     });
   };
@@ -132,15 +116,31 @@ class App extends React.Component {
     };
     const partOne = this.state.Contacts.slice(0, index);
     const partTwo = this.state.Contacts.slice(index + 1);
-    const editedList = [...partOne, editedContact, ...partTwo];
+    const newList = [...partOne, editedContact, ...partTwo];
     this.setState(state => {
       return {
-        Contacts: editedList
+        Contacts: newList
       };
     });
-  }
+  };
+
+  onSearch = contactName => {
+    this.setState({
+      findContact: contactName
+    });
+  };
+
+  onShowContactList = (items, searchValue) => {
+    if (searchValue.length === 0) {
+      return items;
+    }
+    return items.filter(item => {
+      return item.name.toLowerCase().indexOf(searchValue.toLowerCase()) > -1;
+    })
+  };
 
   render() {
+    const showContacts = this.onShowContactList(this.state.Contacts, this.state.findContact);
     return (
       <div className="container">
         <div id="card_contacts">
@@ -151,14 +151,14 @@ class App extends React.Component {
           >
             <h1>Contact List App</h1>
             <Router>
-              <Header />
+              <Header onSearch={this.onSearch} />
               <Switch>
                 <Route
                   path="/"
                   exact
                   render={() => (
                     <UserList
-                      Contacts={this.state.Contacts}
+                      Contacts={showContacts}
                       onStarChange={this.onStarChange}
                       onDeleteContact={this.onDeleteContact}
                       onEditContact={this.onEditContact}
